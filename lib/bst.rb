@@ -4,7 +4,7 @@ require_relative 'null_node.rb'
 class Bst
   attr_accessor :head
 
-  def initialize(head=nil) # TODO Should I use NullNode::DEFAULT)?
+  def initialize(head=nil)
     if head != nil
       @head = wrap_in_node(head)
     else
@@ -20,12 +20,20 @@ class Bst
     new
   end
 
+  def traverse(current=@head)
+    if current != nil
+      puts current.data
+    else
+      # TODO Implement traversal
+      return
+    end
+  end
+
   def insert(data, current=@head)
     if current == nil
       @head = wrap_in_node(data)
       return
     end
-
     if data <= current.data
       if current.left == NullNode::DEFAULT
         current.left = wrap_in_node(data)
@@ -41,11 +49,22 @@ class Bst
     end
   end
 
+  def include?(value, current=@head)
+    return false if @head == nil
+    if value == current.data
+      return true
+    else
+      if (value < current.data) && (current.left != NullNode::DEFAULT)
+        include?(value, current.left)
+      elsif (value > current.data) && (current.right != NullNode::DEFAULT)
+        include?(value, current.right)
+      else
+        return false
+      end
+    end
+  end
+
   # def delete(value) # Delete a value from the tree and repair the tree
-  #
-  # end
-  #
-  # def include? # Verify/Reject the precense of a value in the tree
   #
   # end
   #
@@ -53,11 +72,11 @@ class Bst
   #
   # end
   #
-  # def maximum # Find the maximun value in the tree
+  # def maximum # Find the maximum value in the tree
   #
   # end
   #
-  # def minimum # Find the mininum value in the tree
+  # def minimum # Find the minimum value in the tree
   #
   # end
   #
@@ -67,11 +86,10 @@ class Bst
 
 ###### EXTENSIONS ######
 
-  
+  # def count_leaves(tree) # Find the total number of leaves on the tree
+  #
+  # end
+  #
+  # def maximum_height(tree) # Report the maximum height of the tree
+
 end
-
-
-
-bst = Bst.new(4)
-
-# Bst.new(Node.new(4))

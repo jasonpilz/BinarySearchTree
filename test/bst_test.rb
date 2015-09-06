@@ -28,12 +28,12 @@ class BstTest < MiniTest::Test
     assert_equal NullNode, @bst.head.left.left.right.class
   end
 
-  def test_empty_Bst_has_nil_as_head
+  def test_empty_tree_has_nil_as_head
     bst = Bst.empty
     assert_nil bst.head
   end
 
-  def test_empty_Bst_can_internally_wrap_intitial_value_in_node
+  def test_empty_tree_can_internally_wrap_intitial_value_in_node
     bst = Bst.new(5)
     assert_equal NullNode::DEFAULT, bst.head.left
     assert_equal NullNode::DEFAULT, bst.head.right
@@ -41,7 +41,7 @@ class BstTest < MiniTest::Test
     assert_equal Node, bst.head.class
   end
 
-  def test_can_insert_data_into_empty_Bst
+  def test_can_insert_data_into_empty_tree
     bst = Bst.empty
     bst.insert(8)
     assert_equal 8, bst.head.data
@@ -68,23 +68,48 @@ class BstTest < MiniTest::Test
     assert_equal 7, @bst.head.data
   end
 
-  def test_can_continue_inserting_lesser_data_down_left_of_Bst
+  def test_can_continue_inserting_lesser_data_down_left_of_tree
     @bst.insert(4)
     @bst.insert(3)
     @bst.insert(2)
     assert_equal 2, @bst.head.left.left.data
   end
 
-  def test_can_continue_inserting_larger_data_down_right_of_Bst
+  def test_can_continue_inserting_larger_data_down_right_of_tree
     @bst.insert(4)
     @bst.insert(5)
     @bst.insert(6)
     assert_equal 6, @bst.head.right.right.data
   end
 
+  def test_include_returns_false_for_an_empty_tree
+    assert_equal false, @bst.include?(5)
+  end
 
+  def test_include_returns_true_for_data_of_head_node
+    @bst.insert(4)
+    assert_equal true, @bst.include?(4)
+    assert_equal false, @bst.include?(5)
+  end
 
+  def test_include_returns_true_for_data_lower_in_the_tree
+    @bst.insert(6)
+    @bst.insert(3)
+    @bst.insert(3456)
+    @bst.insert(143)
+    assert_equal true, @bst.include?(3456)
+    assert_equal true, @bst.include?(143)
+    assert_equal true, @bst.include?(3)
+    assert_equal false, @bst.include?(543)
+  end
 
-
-
+  def test_include_returns_false_for_no_data_match_found
+    @bst.insert("Joe")
+    @bst.insert("Bob")
+    @bst.insert("Jimmy")
+    @bst.insert("Larry")
+    assert_equal false, @bst.include?("Bobby")
+    assert_equal false, @bst.include?("Jim")
+    assert_equal true, @bst.include?("Jimmy")
+  end
 end
