@@ -156,13 +156,6 @@ class BstTest < MiniTest::Test
     assert_equal 1, @bst.minimum_value
   end
 
-  def test_delete_raises_error_with_empty_tree
-    assert_raises "Value not found" do
-      bst = Bst.empty
-      bst.delete(9)
-    end
-  end
-
   def test_find_min_node_of_subtree
     @bst.insert(8)
     @bst.insert(12)
@@ -215,6 +208,33 @@ class BstTest < MiniTest::Test
     assert_equal 4, @bst.depth_of(5.5)
     assert_equal 4, @bst.depth_of(7)
     assert_equal 5, @bst.depth_of(8)
+  end
+
+  def test_sort_returns_empty_array_when_tree_empty
+    bst = Bst.empty
+    assert_equal [], bst.sort
+  end
+
+  def test_sort_returns_1_element_array_from_tree_with_head
+    @bst.insert(5)
+    assert_equal [5], @bst.sort
+  end
+
+  def test_sort_returns_sorted_array_of_tree
+    @bst.insert(4)
+    @bst.insert(5)
+    @bst.insert(6)
+    @bst.insert(5.5)
+    @bst.insert(7)
+    @bst.insert(8)
+    assert_equal [4, 5, 5.5, 6, 7, 8], @bst.sort
+  end
+
+  def test_delete_raises_error_with_empty_tree
+    assert_raises "Value not found" do
+      bst = Bst.empty
+      bst.delete(9)
+    end
   end
 
   def test_can_delete_node_with_2_children_from_tree
