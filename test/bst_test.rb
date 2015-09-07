@@ -112,4 +112,121 @@ class BstTest < MiniTest::Test
     assert_equal false, @bst.include?("Jim")
     assert_equal true, @bst.include?("Jimmy")
   end
+
+  def test_maximum_returns_nil_for_empty_tree
+    bst = Bst.empty
+    assert_nil bst.maximum_value
+  end
+
+  def test_maximum_returns_head_data_for_tree_with_head_node
+    @bst.insert(8)
+    assert_equal 8, @bst.maximum_value
+  end
+
+  def test_maximum_returns_largest_data_in_tree
+    @bst.insert("d")
+    @bst.insert("b")
+    @bst.insert("a")
+    @bst.insert("c")
+    @bst.insert("f")
+    @bst.insert("e")
+    @bst.insert("g")
+    assert_equal "g", @bst.maximum_value
+  end
+
+  def test_minimum_returns_nil_for_empty_tree
+    bst = Bst.empty
+    assert_nil bst.minimum_value
+  end
+
+  def test_minimum_returns_head_data_for_tree_with_head_node
+    @bst.insert(9)
+    assert_equal 9, @bst.minimum_value
+  end
+
+  def test_minimum_returns_smallest_data_in_tree
+    @bst.insert(8)
+    @bst.insert(4)
+    @bst.insert(2)
+    @bst.insert(1)
+    @bst.insert(3)
+    @bst.insert(6)
+    @bst.insert(5)
+    @bst.insert(7)
+    assert_equal 1, @bst.minimum_value
+  end
+
+  def test_delete_raises_error_with_empty_tree
+    assert_raises "Value not found" do
+      bst = Bst.empty
+      bst.delete(9)
+    end
+  end
+
+  def test_find_min_node_of_subtree
+    @bst.insert(8)
+    @bst.insert(12)
+    @bst.insert(10)
+    @bst.insert(14)
+    @bst.insert(9)
+    @bst.insert(13)
+    @bst.insert(11)
+    @bst.insert(15)
+    assert_equal @bst.head.right.left.left, @bst.find_min(@bst.head.right)
+    assert_equal 9, @bst.find_min(@bst.head.right).data
+  end
+
+  def test_depth_of_raises_error_with_empty_tree
+    assert_raises "Value not found" do
+      bst = Bst.empty
+      bst.depth_of(7)
+    end
+  end
+
+  def test_depth_of_returns_1_for_head_node
+    @bst.insert(8)
+    assert_equal 1, @bst.depth_of(8)
+  end
+
+  def test_depth_of_raises_error_if_value_not_in_tree
+    assert_raises "Value not found" do
+      @bst.insert(8)
+      @bst.insert(4)
+      @bst.insert(12)
+      @bst.depth_of(5)
+    end
+  end
+
+  def test_depth_of_returns_2_for_second_layer_of_tree
+    @bst.insert(8)
+    @bst.insert(4)
+    @bst.insert(12)
+    assert_equal 2, @bst.depth_of(4)
+    assert_equal 2, @bst.depth_of(12)
+  end
+
+  def test_depth_of_returns_level_lower_in_tree
+    @bst.insert(4)
+    @bst.insert(5)
+    @bst.insert(6)
+    @bst.insert(5.5)
+    @bst.insert(7)
+    @bst.insert(8)
+    assert_equal 4, @bst.depth_of(5.5)
+    assert_equal 4, @bst.depth_of(7)
+    assert_equal 5, @bst.depth_of(8)
+  end
+
+  def test_can_delete_node_with_2_children_from_tree
+    skip
+    @bst.insert("d")
+    @bst.insert("b")
+    @bst.insert("a")
+    @bst.insert("c")
+    @bst.insert("f")
+    @bst.insert("e")
+    @bst.insert("g")
+    @bst.delete("b")
+    assert_equal "c", @bst.head.left.data
+  end
 end
