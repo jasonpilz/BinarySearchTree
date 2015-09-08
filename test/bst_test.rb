@@ -237,6 +237,34 @@ class BstTest < MiniTest::Test
     end
   end
 
+  def test_can_import_data_from_empty_file
+    @bst.import_data_from_file("/Users/jasonpilz/code/binary_search_tree/io/input_empty.txt")
+    assert_equal nil, @bst.head
+  end
+
+  def test_can_import_data_from_file_1_value
+    @bst.import_data_from_file("/Users/jasonpilz/code/binary_search_tree/io/input.txt")
+    assert_equal "Dog", @bst.head.data
+    assert_equal NullNode, @bst.head.left.class
+    assert_equal NullNode, @bst.head.right.class
+  end
+
+  def test_can_import_data_from_file_multiple_values
+    @bst.import_data_from_file("/Users/jasonpilz/code/binary_search_tree/io/input_2.txt")
+    assert_equal "d", @bst.head.data
+    assert_equal true, @bst.include?("e")
+    assert_equal true, @bst.include?("g")
+    assert_equal "c", @bst.head.left.right.data
+  end
+
+  def test_can_export_data_to_file_from_tree_with_multiple_nodes
+    skip
+    testIO = StringIO.new
+    @bst.insert("d")
+    @bst.export_data_to_file(testIO)
+    assert_equal "d", testIO.string.should
+  end
+
   def test_can_delete_node_with_2_children_from_tree
     skip
     @bst.insert("d")

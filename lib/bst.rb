@@ -33,6 +33,37 @@ class Bst
     current
   end
 
+  def traverse_preorder(current=@head)
+    return if current == null
+    sorted << current.data
+    traverse_preorder(current.left)
+    traverse_preorder(current.right)
+  end
+
+  def traverse_inorder(current=@head)
+    return if current == null
+    traverse_inorder(current.left)
+    sorted << current.data
+    traverse_inorder(current.right)
+  end
+
+  def import_data_from_file(file)
+    handle = File.open(file)
+    bst = self
+    handle.each_line do |line|
+      bst.insert(line.chomp)
+    end
+  end
+
+  def export_data_to_file(file)
+    writer = File.open(file, 'w')
+    self.sort
+    @sorted.each do |value|
+      writer.write("#{value}\n")
+    end
+    writer.flush
+  end
+
   ###### BASE EXPECTATIONS ######
 
   def insert(data, current=@head)
@@ -103,27 +134,13 @@ class Bst
     end
   end
 
-  def traverse_preorder(current=@head)
-    return if current == null
-    sorted << current.data
-    traverse_preorder(current.left)
-    traverse_preorder(current.right)
-  end
-
-  def traverse_inorder(current=@head)
-    return if current == null
-    traverse_inorder(current.left)
-    sorted << current.data
-    traverse_inorder(current.right)
-  end
-
   def sort # Outputs an array of the tree values in sorted order
     return sorted if @head == nil
     traverse_inorder
     sorted
   end
 
-  def delete(value, parent=@head, current=nil) # Delete a value from the tree and repair the tree
+  def delete(value, parent=@head, current=nil)
     raise "Value not found" if parent == nil
 
     # if value < parent.data
